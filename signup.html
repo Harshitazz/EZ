@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2>Signup</h2>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Signup</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Redirect to the blog writing page
+            window.location.href = 'blog_write.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Writing Block</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .writing-block {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .writing-block h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        .writing-block textarea {
+            width: 100%;
+            height: 150px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+        .writing-block button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .writing-block button:hover {
+            background-color: #45a049;
+        }
+        .generate-button {
+            background-color: #3498db;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .generate-button:hover {
+            background-color: #2980b9;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .style-button {
+            flex: 1;
+            margin-right: 5px;
+        }
+        .style-button:last-child {
+            margin-right: 0;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="writing-block">
+        <h2>AI-Assisted Blog Writing</h2>
+        
+        <label for="promptInput">Enter your prompt:</label>
+        <textarea id="promptInput" placeholder="Enter your prompt here..."></textarea>
+
+        <div class="button-group">
+            <button class="style-button" onclick="setActiveStyle(this)">Formal</button>
+            <button class="style-button" onclick="setActiveStyle(this)">Informal</button>
+            <button class="style-button" onclick="setActiveStyle(this)">Technical</button>
+        </div>
+
+        <button class="generate-button" onclick="generateContent()">Generate Content</button>
+
+        <label for="aiGeneratedContent">AI-Generated Content:</label>
+        <textarea id="aiGeneratedContent" placeholder="AI-generated content will appear here..." readonly></textarea>
+
+        <button class="save-button">Save Draft</button>
+        <button class="post-button">Post Blog</button>
+    </div>
+
+    <script>
+        function setActiveStyle(button) {
+            document.querySelectorAll('.style-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+        }
+
+        async function generateContent() {
+            const promptTextarea = document.getElementById('promptInput');
+            const aiGeneratedTextarea = document.getElementById('aiGeneratedContent');
+            const prompt = promptTextarea.value;
+            const style = document.querySelector('.style-button.active')?.textContent || 'Formal';
+
+            if (!prompt.trim()) {
+                alert('Please enter a prompt before generating content.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt, style }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                aiGeneratedTextarea.value = data.generatedContent;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to generate content. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
